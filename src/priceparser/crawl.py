@@ -26,17 +26,18 @@ async def walk_listings(
     warned_max_pages = False
 
     for start_url in start_urls:
+        if max_pages is not None and pages_fetched >= max_pages:
+            break
         url: str | None = start_url
-        first_in_chain = True
         while url is not None:
-            if max_pages is not None and pages_fetched >= max_pages and not first_in_chain:
+            if max_pages is not None and pages_fetched >= max_pages:
                 if not warned_max_pages:
                     logger.warning(
                         "Достигнут max_pages=%s, остальные страницы пропущены",
                         max_pages,
                     )
                     warned_max_pages = True
-                break
+                return all_drafts, pages_fetched, page_errors
 
             norm = normalize_url(url)
             if norm in seen:
@@ -70,7 +71,6 @@ async def walk_listings(
                 logger.warning("На %s не найдено товаров", url)
 
             all_drafts.extend(result.products)
-            first_in_chain = False
             url = result.next_url
 
     return all_drafts, pages_fetched, page_errors

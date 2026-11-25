@@ -1,4 +1,4 @@
-user_agent: "price-catalog-parser/0.1 (+https://github.com/StefanMitrokhin/price-catalog-parser; учебный парсер, только demo-сайты)"
+user_agent: "price-catalog-parser/0.1.0 (educational parser; +https://github.com/StefanMitrokhin/price-catalog-parser)"
 timeout_seconds: 20
 max_retries: 3
 backoff_base_seconds: 0.5

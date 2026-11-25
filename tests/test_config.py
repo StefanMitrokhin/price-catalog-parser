@@ -125,6 +125,23 @@ sources:
     assert str(abs_resolved.output_dir).endswith("/var/output/abs")
 
 
+def test_user_agent_must_be_ascii(tmp_path: Path) -> None:
+    path = tmp_path / "ua.yaml"
+    path.write_text(
+        """
+user_agent: "price-catalog-parser/0.1 (учебный парсер)"
+sources:
+  - id: books
+    type: books_toscrape
+    start_url: https://books.toscrape.com/
+    currency: GBP
+""",
+        encoding="utf-8",
+    )
+    with pytest.raises(ConfigError, match="ASCII"):
+        load_config(path)
+
+
 def test_missing_file(tmp_path: Path) -> None:
     with pytest.raises(ConfigError):
         load_config(tmp_path / "nope.yaml")

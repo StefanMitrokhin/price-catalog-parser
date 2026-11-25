@@ -9,6 +9,7 @@ from typing import Literal, cast
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
+from priceparser import __version__
 from priceparser.errors import ConfigError
 from priceparser.urls import is_http_url
 
@@ -175,9 +176,8 @@ class AppConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
     user_agent: str = (
-        "price-catalog-parser/0.1 "
-        "(+https://github.com/StefanMitrokhin/price-catalog-parser; "
-        "учебный парсер, только demo-сайты)"
+        f"price-catalog-parser/{__version__} "
+        "(educational parser; +https://github.com/StefanMitrokhin/price-catalog-parser)"
     )
     timeout_seconds: float = 20.0
     max_retries: int = 3
@@ -203,6 +203,8 @@ class AppConfig(BaseModel):
             raise ValueError("user_agent не может быть пустым")
         if len(s) > 300:
             raise ValueError("user_agent длиннее 300 символов")
+        if not s.isascii():
+            raise ValueError("user_agent должен содержать только ASCII-символы (заголовок HTTP)")
         return s
 
     @field_validator("timeout_seconds")

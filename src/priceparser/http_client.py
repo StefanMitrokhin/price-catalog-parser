@@ -94,20 +94,23 @@ class PoliteClient:
         if check_robots and not await self._robots.allowed(self._fetch_status, url):
             raise RobotsDenied(url)
 
+        response = await self._get_with_limits(url)
+        status = response.status_code
+        if status in self._settings.retry_statuses:
+            raise FetchError(url, f"HTTP {status}", status=status)
+        if status >= 400:
+            raise FetchError(url, f"HTTP {status}", status=status)
+        content_type = response.headers.get("content-type", "")
+        logger.debug("GET %s content-type: %s", url, content_type)
+        return response.text
+
+    async def _get_with_limits(self, url: str) -> httpx.Response:
         async with self._sem:
             await self._wait_host(url)
-            response = await self._fetch_with_retries(url)
-            status = response.status_code
-            if status in self._settings.retry_statuses:
-                raise FetchError(url, f"HTTP {status}", status=status)
-            if status >= 400:
-                raise FetchError(url, f"HTTP {status}", status=status)
-            content_type = response.headers.get("content-type", "")
-            logger.debug("GET %s content-type: %s", url, content_type)
-            return response.text
+            return await self._fetch_with_retries(url)
 
     async def _fetch_status(self, url: str) -> tuple[int, str]:
-        response = await self._fetch_with_retries(url)
+        response = await self._get_with_limits(url)
         return response.status_code, response.text
 
     async def _wait_host(self, url: str) -> None:

@@ -162,6 +162,32 @@ async def test_delay_between_requests() -> None:
 
 
 @pytest.mark.asyncio
+async def test_robots_fetch_uses_host_delay() -> None:
+    sleeps: list[float] = []
+    state = {"t": 0.0}
+
+    async def sleeper(seconds: float) -> None:
+        state["t"] += seconds
+        sleeps.append(seconds)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(404, text="")
+        return httpx.Response(200, text="page")
+
+    async with PoliteClient(
+        _settings(respect_robots=True),
+        transport=httpx.MockTransport(handler),
+        sleeper=sleeper,
+        monotonic=lambda: state["t"],
+        jitter=lambda: 0.0,
+    ) as client:
+        text = await client.get_text("https://example.com/page")
+    assert text == "page"
+    assert sleeps == [1.0]
+
+
+@pytest.mark.asyncio
 async def test_robots_denied_does_not_get_page() -> None:
     robots = read_fixture("robots_disallow_private.txt")
     paths: list[str] = []

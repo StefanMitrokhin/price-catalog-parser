@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from decimal import Decimal
 
 import pytest
@@ -121,6 +122,25 @@ async def test_books_collect_travel_only_with_details(
     parse_fail_client = _books_client()
     parse_fail_result = await source.collect(parse_fail_client)
     assert parse_fail_result.page_errors == 2
+    assert parse_fail_result.detail_pages_fetched == 0
+
+
+@pytest.mark.asyncio
+async def test_max_pages_limit_applies_across_category_chains() -> None:
+    source = BooksToScrapeSource(
+        source_id="books",
+        start_url=BOOKS_HOME,
+        currency="GBP",
+        categories=("Travel", "Mystery"),
+        max_pages=1,
+        fetch_details=False,
+    )
+    client = _books_client()
+    result = await source.collect(client)
+    assert BOOKS_TRAVEL in client.calls
+    assert BOOKS_MYSTERY not in client.calls
+    assert len(result.products) == 2
+    assert result.pages_fetched == 1
 
 
 @pytest.mark.asyncio
@@ -154,10 +174,18 @@ async def test_failed_category_does_not_drop_previous() -> None:
         start_url=BOOKS_HOME,
         currency="GBP",
         categories=("Travel", "Mystery"),
-        max_pages=1,
+        max_pages=2,
         fetch_details=False,
     )
+    travel_single_page = re.sub(
+        r'<li class="next">.*?</li>',
+        "",
+        read_fixture("books_travel.html"),
+        count=1,
+        flags=re.DOTALL,
+    )
     client = _books_client()
+    client.pages[BOOKS_TRAVEL] = travel_single_page
     client.errors[BOOKS_MYSTERY] = FetchError(BOOKS_MYSTERY, "HTTP 404", status=404)
     result = await source.collect(client)
     assert result.page_errors == 1

@@ -301,12 +301,13 @@ class BooksToScrapeSource(Source):
                     detail_errors += 1
                     return draft
                 try:
-                    detail_pages_fetched += 1
-                    return parse_books_detail(draft.url, html, draft)
+                    parsed = parse_books_detail(draft.url, html, draft)
                 except ParseError as exc:
                     logger.warning("Ошибка разбора карточки %s: %s", draft.url, exc)
                     detail_errors += 1
                     return draft
+                detail_pages_fetched += 1
+                return parsed
 
             unique = list(await asyncio.gather(*(fetch_one(d) for d in unique)))
             page_errors += detail_errors

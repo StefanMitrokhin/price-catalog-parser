@@ -322,26 +322,26 @@ async def _run_sources(
         except ConfigError as exc:
             _echo_config_error(exc)
 
+        logger.info("Источник %s: старт", source.id)
         source_failed = False
         try:
             result = await adapter.collect(client)
         except Exception:
             logger.exception("Источник %s: ошибка сбора", source.id)
-            failed += 1
             source_failed = True
+            failed += 1
             if strict:
                 break
             continue
 
         if not _should_write_files(result):
-            failed += 1
             source_failed = True
+            failed += 1
             if strict:
                 break
             continue
 
         if not _source_ok_after_collect(result, strict=strict):
-            failed += 1
             source_failed = True
 
         started_at = result.products[0].scraped_at if result.products else clock.utc_now()
@@ -366,8 +366,8 @@ async def _run_sources(
             save_snapshot(snap_path, snapshot)
         except ExportError:
             logger.exception("Не удалось записать снимок %s", snap_path)
-            failed += 1
             source_failed = True
+            failed += 1
             if strict:
                 break
             continue
@@ -381,7 +381,6 @@ async def _run_sources(
             current_products=result.products,
         )
         if diff_fail:
-            failed += 1
             source_failed = True
 
         base_name = f"{source.id}-{run_id}"
@@ -418,7 +417,6 @@ async def _run_sources(
                 logger.info("Записан %s", changes_path)
         except ExportError:
             logger.exception("Ошибка экспорта для источника %s", source.id)
-            failed += 1
             source_failed = True
 
         if printed_any:
@@ -441,6 +439,8 @@ async def _run_sources(
         )
         printed_any = True
 
+        if source_failed:
+            failed += 1
         if source_failed and strict:
             break
 
