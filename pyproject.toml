@@ -80,7 +80,6 @@ addopts = "-q --strict-markers"
 [tool.coverage.run]
 branch = true
 source = ["priceparser"]
-omit = ["*/__main__.py"]
 
 [tool.coverage.report]
 fail_under = 90
