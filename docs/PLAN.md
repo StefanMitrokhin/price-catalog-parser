@@ -10,7 +10,7 @@
 - `https://webscraper.io/test-sites/e-commerce/static/computers/laptops` — карточка `div.card.thumbnail`, цена `span[itemprop=price]` вида `$416.99`, ссылка `a.title` с атрибутом `title`, рейтинг `p[data-rating]`, картинка `img[itemprop=image]`, следующая страница `a[rel=next]`.
 - `https://webscraper.io/robots.txt` запрещает только `/test-sites/product/`, `/test-sites/pagination/`, `/test-sites/pagination*?page=`, `/test-sites/scroll/`, `/test-sites/load-more/`. Путь `/test-sites/e-commerce/` **не запрещён**. Его и парсим. Запрещённые пути не добавлять в конфиг.
 
-Автор портфолио: **Стефан Митрохин**, GitHub **Stephanchik**. Репозиторий: `https://github.com/Stephanchik/price-catalog-parser`.
+Автор портфолио: **Стефан Митрохин**. Живой логин GitHub на 2026-11-25 — **StefanMitrokhin** (`https://github.com/StefanMitrokhin`). Имя `Stephanchik` из постановки задачи отдаёт 404, поэтому все ссылки на профиль и репозиторий ведут на `https://github.com/StefanMitrokhin/price-catalog-parser`. Строку copyright в `LICENSE` не переписывать: там остаётся `2026 Stephanchik`.
 
 ---
 
@@ -85,6 +85,7 @@
 | Покрытие | Ветка включена, порог 90% по пакету `priceparser`. |
 | CI | Ubuntu, Python 3.11 и 3.12. Docker в CI не собирать. |
 | Версия | `0.1.0` в `priceparser.__version__`. |
+| Ссылки на GitHub | Профиль и репозиторий: `StefanMitrokhin`. Логин `Stephanchik` на 2026-11-25 отвечает 404. Copyright в LICENSE не трогать. |
 
 ---
 
@@ -256,8 +257,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Stephanchik/price-catalog-parser"
-Repository = "https://github.com/Stephanchik/price-catalog-parser"
+Homepage = "https://github.com/StefanMitrokhin/price-catalog-parser"
+Repository = "https://github.com/StefanMitrokhin/price-catalog-parser"
 
 [project.scripts]
 priceparser = "priceparser.cli:app"
@@ -780,7 +781,7 @@ async def walk_listings(
 Файл в корне, копируется пользователем в `config.yaml` (этот второй файл в git не кладётся; в `.gitignore` его можно не добавлять, в README сказано не коммитить свой рабочий конфиг, если там появятся правки). Сам пример коммитится.
 
 ```yaml
-user_agent: "price-catalog-parser/0.1 (+https://github.com/Stephanchik/price-catalog-parser; учебный парсер, только demo-сайты)"
+user_agent: "price-catalog-parser/0.1 (+https://github.com/StefanMitrokhin/price-catalog-parser; учебный парсер, только demo-сайты)"
 timeout_seconds: 20
 max_retries: 3
 backoff_base_seconds: 0.5
@@ -943,7 +944,7 @@ class AppConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
     user_agent: str = (
         "price-catalog-parser/0.1 "
-        "(+https://github.com/Stephanchik/price-catalog-parser; "
+        "(+https://github.com/StefanMitrokhin/price-catalog-parser; "
         "учебный парсер, только demo-сайты)"
     )
     timeout_seconds: float = 20.0
@@ -2833,7 +2834,7 @@ data/runs/*
 ~~~~markdown
 # Парсер цен и каталогов в Excel
 
-Учебный проект Стефана Митрохина ([Stephanchik](https://github.com/Stephanchik)).
+Учебный проект Стефана Митрохина ([StefanMitrokhin](https://github.com/StefanMitrokhin)).
 
 Задача, которую он закрывает: «спарсите цены конкурентов в Excel». Программа открывает каталог, собирает товары и сохраняет таблицу, которую можно сразу открыть в Excel или отдать в Google Sheets. Повторный запуск сравнивает цены с прошлым разом.
 
@@ -3078,7 +3079,7 @@ Topics, все сразу:
 Команда, если установлен `gh` от имени владельца:
 
 ```bash
-gh repo edit Stephanchik/price-catalog-parser \
+gh repo edit StefanMitrokhin/price-catalog-parser \
   --description "Парсер цен и каталогов с выгрузкой в Excel и CSV. Демо на учебных сайтах." \
   --add-topic python \
   --add-topic web-scraping \
