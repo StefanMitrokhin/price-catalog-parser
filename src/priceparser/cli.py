@@ -118,9 +118,7 @@ def _print_source_report(lines: SourceReportLines) -> None:
     typer.echo(f"Источник: {lines.source_id}")
     typer.echo(f"Страниц каталога: {lines.pages_fetched}")
     typer.echo(f"Страниц карточек: {lines.detail_pages_fetched}")
-    typer.echo(
-        f"Товаров: {lines.product_count} (дублей отброшено: {lines.duplicates_dropped})"
-    )
+    typer.echo(f"Товаров: {lines.product_count} (дублей отброшено: {lines.duplicates_dropped})")
     typer.echo(f"Ошибки страниц: {lines.page_errors}")
     if lines.snapshot_path is not None:
         typer.echo(f"Снимок: {_display(lines.snapshot_path)}")
@@ -774,9 +772,7 @@ def diff_cmd(
 
     if output_path is None:
         out_dir = Path.cwd() / "output"
-        out_name = (
-            f"{source_id}-diff-{prev_snap.meta.run_id}-{curr_snap.meta.run_id}.xlsx"
-        )
+        out_name = f"{source_id}-diff-{prev_snap.meta.run_id}-{curr_snap.meta.run_id}.xlsx"
         output = out_dir / out_name
     elif output_path.is_absolute():
         output = output_path.resolve()

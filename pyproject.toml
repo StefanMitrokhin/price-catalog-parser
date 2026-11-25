@@ -47,10 +47,7 @@ Repository = "https://github.com/StefanMitrokhin/price-catalog-parser"
 priceparser = "priceparser.cli:app"
 
 [tool.hatch.build.targets.wheel]
-only-include = ["priceparser"]
-
-[tool.hatch.build.targets.wheel.sources]
-"src" = ""
+packages = ["src/priceparser"]
 
 [tool.hatch.build.targets.sdist]
 include = ["src/priceparser", "README.md", "LICENSE", "pyproject.toml"]
@@ -59,6 +56,7 @@ include = ["src/priceparser", "README.md", "LICENSE", "pyproject.toml"]
 target-version = "py311"
 line-length = 100
 src = ["src", "tests"]
+extend-exclude = ["docs/PLAN.md"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
@@ -76,11 +74,13 @@ quote-style = "double"
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-q --strict-markers"
 
 [tool.coverage.run]
 branch = true
 source = ["priceparser"]
+omit = ["*/__main__.py"]
 
 [tool.coverage.report]
 fail_under = 90

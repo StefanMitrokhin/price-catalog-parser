@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 from collections.abc import Callable
+
 from priceparser.errors import FetchError, ParseError, RobotsDenied
 from priceparser.http_client import PageFetcher
 from priceparser.models import ListingParseResult, ProductDraft
@@ -26,15 +27,16 @@ async def walk_listings(
 
     for start_url in start_urls:
         url: str | None = start_url
+        first_in_chain = True
         while url is not None:
-            if max_pages is not None and pages_fetched >= max_pages:
+            if max_pages is not None and pages_fetched >= max_pages and not first_in_chain:
                 if not warned_max_pages:
                     logger.warning(
                         "Достигнут max_pages=%s, остальные страницы пропущены",
                         max_pages,
                     )
                     warned_max_pages = True
-                return all_drafts, pages_fetched, page_errors
+                break
 
             norm = normalize_url(url)
             if norm in seen:
@@ -68,6 +70,7 @@ async def walk_listings(
                 logger.warning("На %s не найдено товаров", url)
 
             all_drafts.extend(result.products)
+            first_in_chain = False
             url = result.next_url
 
     return all_drafts, pages_fetched, page_errors

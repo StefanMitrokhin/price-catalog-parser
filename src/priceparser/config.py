@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Literal, cast
 
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
@@ -183,9 +183,7 @@ class AppConfig(BaseModel):
     max_retries: int = 3
     backoff_base_seconds: float = 0.5
     backoff_max_seconds: float = 8.0
-    retry_statuses: list[int] = Field(
-        default_factory=lambda: [429, 500, 502, 503, 504]
-    )
+    retry_statuses: list[int] = Field(default_factory=lambda: [429, 500, 502, 503, 504])
     concurrency: int = 4
     delay_seconds: float = 1.0
     respect_robots: bool = True
@@ -388,19 +386,15 @@ def load_config(path: Path) -> ResolvedConfig:
 
     resolved_sources: list[ResolvedSource] = []
     for entry in app.sources:
-        max_pages = (
-            entry.max_pages if "max_pages" in entry.model_fields_set else app.max_pages
-        )
+        max_pages = entry.max_pages if "max_pages" in entry.model_fields_set else app.max_pages
         fetch_details = (
-            entry.fetch_details
-            if "fetch_details" in entry.model_fields_set
-            else app.fetch_details
+            entry.fetch_details if "fetch_details" in entry.model_fields_set else app.fetch_details
         )
 
         yaml_path: Path | None = None
         yaml_spec: YamlSourceConfig | None = None
         if entry.type == "yaml":
-            yaml_path = (base / entry.config_file).resolve()
+            yaml_path = (base / cast(str, entry.config_file)).resolve()
             yaml_spec = _load_yaml_source(yaml_path)
 
         resolved_sources.append(

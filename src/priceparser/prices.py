@@ -27,6 +27,8 @@ DEFAULT_IN_PHRASES: tuple[str, ...] = (
 
 def parse_price(raw: str) -> Decimal:
     """Вытащить цену из текста узла."""
+    if re.search(r"-\s*[\d,.\s\u00A0]", raw):
+        raise ParseError(f"отрицательная цена {raw!r}")
     cleaned = re.sub(r"[^\d,.\s\u00A0]", "", raw)
     cleaned = cleaned.replace("\u00a0", "").replace(" ", "")
     if not cleaned or not re.search(r"\d", cleaned):
@@ -51,7 +53,7 @@ def parse_price(raw: str) -> Decimal:
             cleaned = cleaned.replace(".", "")
     elif cleaned.count(".") == 1:
         whole, frac = cleaned.split(".")
-        if len(frac) == 3 and frac.isdigit():
+        if len(frac) == 3 and frac.isdigit() and len(whole) <= 1:
             cleaned = whole + frac
 
     try:

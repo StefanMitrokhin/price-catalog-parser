@@ -40,7 +40,7 @@ class PoliteClient:
         self,
         settings: HttpSettings,
         *,
-        transport: httpx.BaseTransport | None = None,
+        transport: httpx.AsyncBaseTransport | None = None,
         sleeper: Callable[[float], Awaitable[None]] | None = None,
         monotonic: Callable[[], float] | None = None,
         jitter: Callable[[], float] | None = None,
@@ -170,7 +170,7 @@ class PoliteClient:
         """
         base = self._settings.backoff_base_seconds * (2 ** (attempt - 1))
         capped = min(self._settings.backoff_max_seconds, base)
-        return capped + self._jitter()
+        return float(capped + self._jitter())
 
     def _retry_after(self, response: httpx.Response) -> float | None:
         """Заголовок Retry-After: целое число секунд -> min(число, backoff_max).
