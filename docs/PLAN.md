@@ -10,7 +10,7 @@
 - `https://webscraper.io/test-sites/e-commerce/static/computers/laptops` — карточка `div.card.thumbnail`, цена `span[itemprop=price]` вида `$416.99`, ссылка `a.title` с атрибутом `title`, рейтинг `p[data-rating]`, картинка `img[itemprop=image]`, следующая страница `a[rel=next]`.
 - `https://webscraper.io/robots.txt` запрещает только `/test-sites/product/`, `/test-sites/pagination/`, `/test-sites/pagination*?page=`, `/test-sites/scroll/`, `/test-sites/load-more/`. Путь `/test-sites/e-commerce/` **не запрещён**. Его и парсим. Запрещённые пути не добавлять в конфиг.
 
-Автор портфолио: **Стефан Митрохин**. Живой логин GitHub на 2026-11-25 — **StefanMitrokhin** (`https://github.com/StefanMitrokhin`). Имя `Stephanchik` из постановки задачи отдаёт 404, поэтому все ссылки на профиль и репозиторий ведут на `https://github.com/StefanMitrokhin/price-catalog-parser`. Строку copyright в `LICENSE` не переписывать: там остаётся `2026 Stephanchik`.
+Автор портфолио: **Stefan Mitrokhin**. Логин GitHub: **StefanMitrokhin** (`https://github.com/StefanMitrokhin`). Репозиторий: `https://github.com/StefanMitrokhin/price-catalog-parser`. В `LICENSE` единственная правка — строка `Copyright (c) 2026 Stefan Mitrokhin`. Остальной текст MIT не менять. В `pyproject.toml` автор — `Stefan Mitrokhin`. Бейдж CI в README ведёт на этот репозиторий.
 
 ---
 
@@ -45,7 +45,7 @@
 - Старая цена не выдумывается. Если на странице её нет, поле пустое. На books.toscrape.com старой цены нет. В фикстуре YAML она есть специально, чтобы селектор был покрыт тестом; на живом webscraper.io её сейчас нет, и в боевом прогоне колонка будет пустой.
 - Лог не пишет HTML страниц и тела ответов.
 - Не коммитить `output/`, снимки прогонов, `.xlsx`, виртуальные окружения.
-- Не менять файл `LICENSE`. Текст MIT остаётся как есть, copyright `2026 Stephanchik`.
+- Не переписывать текст MIT в `LICENSE`. Единственная допустимая правка файла — строка `Copyright (c) 2026 Stefan Mitrokhin`.
 - Не добавлять lock-файл (`uv.lock`, `poetry.lock`, `requirements.txt`). Версии зафиксированы в `pyproject.toml` через `==`.
 - Не подключать Rich, pandas, Scrapy, BeautifulSoup-замены, tenacity. Повторы и пауза написаны в `http_client.py`, чтобы тест управлял сном.
 - Не поднимать покрытие ради пустых тестов «импортнулся модуль». Список тестов в разделе 14 полный: других тестовых функций не добавлять. Вспомогательные функции внутри тестовых файлов можно.
@@ -85,7 +85,7 @@
 | Покрытие | Ветка включена, порог 90% по пакету `priceparser`. |
 | CI | Ubuntu, Python 3.11 и 3.12. Docker в CI не собирать. |
 | Версия | `0.1.0` в `priceparser.__version__`. |
-| Ссылки на GitHub | Профиль и репозиторий: `StefanMitrokhin`. Логин `Stephanchik` на 2026-11-25 отвечает 404. Copyright в LICENSE не трогать. |
+| Автор и репозиторий | Имя: `Stefan Mitrokhin`. Логин и URL: `StefanMitrokhin`, `https://github.com/StefanMitrokhin/price-catalog-parser`. Copyright в LICENSE: `Copyright (c) 2026 Stefan Mitrokhin`. Бейдж CI указывает на этот репозиторий. |
 
 ---
 
@@ -103,7 +103,7 @@
 ├── .dockerignore
 ├── .gitignore                         # существующий файл, только дописать блок из раздела 16
 ├── Dockerfile
-├── LICENSE                            # не изменять
+├── LICENSE                            # только copyright: Stefan Mitrokhin
 ├── README.md                          # заменить целиком текстом из раздела 17
 ├── config.example.yaml
 ├── pyproject.toml
@@ -227,7 +227,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
-authors = [{ name = "Стефан Митрохин" }]
+authors = [{ name = "Stefan Mitrokhin" }]
 keywords = ["scraping", "prices", "excel", "csv", "portfolio"]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -2819,7 +2819,7 @@ data/runs/*
 
 ## 17. Текст `README.md` дословно
 
-Заменить корневой `README.md` на текст внутри забора из четырёх тильд ниже. Строки забора в файл не входят. Внутри нет ссылок на картинки: бинарные скриншоты в репозиторий не класть, чтобы README не показывал битые изображения. Раздел «Как выглядит результат» описывает листы так, чтобы заказчик понял выгрузку без PNG.
+Заменить корневой `README.md` на текст внутри забора из четырёх тильд ниже. Строки забора в файл не входят. Единственная картинка в README — бейдж CI на `https://github.com/StefanMitrokhin/price-catalog-parser/actions/workflows/ci.yml`. Других картинок и бинарных скриншотов нет: раздел «Как выглядит результат» описывает листы словами.
 
 Если у сопровождающего позже появятся три снимка экрана, их можно положить в `docs/screenshots/` и дописать картинки отдельным коммитом. Имена, если этот коммит когда-нибудь случится:
 
@@ -2834,7 +2834,9 @@ data/runs/*
 ~~~~markdown
 # Парсер цен и каталогов в Excel
 
-Учебный проект Стефана Митрохина ([StefanMitrokhin](https://github.com/StefanMitrokhin)).
+[![CI](https://github.com/StefanMitrokhin/price-catalog-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/StefanMitrokhin/price-catalog-parser/actions/workflows/ci.yml)
+
+Учебный проект Stefan Mitrokhin ([StefanMitrokhin](https://github.com/StefanMitrokhin)).
 
 Задача, которую он закрывает: «спарсите цены конкурентов в Excel». Программа открывает каталог, собирает товары и сохраняет таблицу, которую можно сразу открыть в Excel или отдать в Google Sheets. Повторный запуск сравнивает цены с прошлым разом.
 
@@ -3166,8 +3168,8 @@ gh repo edit StefanMitrokhin/price-catalog-parser \
 
 - `ruff check .`, `ruff format --check .`, `mypy src` без ошибок;
 - `pytest --cov=priceparser --cov-report=term-missing --cov-fail-under=90` проходит локально на той версии Python, которая стоит в среде (3.11 или 3.12);
-- в README нет картинок и нет маркеров из плана;
-- `LICENSE` не изменён (`git diff -- LICENSE` пустой);
+- в README нет картинок, кроме бейджа CI на `StefanMitrokhin/price-catalog-parser`, и нет маркеров из плана;
+- `git diff -- LICENSE` показывает только замену строки copyright на `Copyright (c) 2026 Stefan Mitrokhin`;
 - `docs/PLAN.md` не изменён реализацией;
 - `docker build` в чеклист приёмки CI не входит. Если в среде есть Docker, собрать образ и выполнить `docker run --rm priceparser version`, ожидание `price-catalog-parser 0.1.0`. Если Docker нет, написать это в итоге PR и не имитировать успех.
 
@@ -3185,6 +3187,7 @@ gh repo edit StefanMitrokhin/price-catalog-parser \
 6. `priceparser run` на фиктивном клиенте пишет xlsx с листами «Товары» и, со второго снимка, «Изменения», и CSV с BOM.
 7. README — клиентский текст из раздела 17.
 8. В коде нет ключей, паролей, обращений к боевым магазинам и отключения robots по умолчанию.
+9. В `LICENSE`, `pyproject.toml` и `README.md` автор — `Stefan Mitrokhin`, ссылки и бейдж CI — `https://github.com/StefanMitrokhin/price-catalog-parser`. Прежнего логина владельца в репозитории нет.
 
 ---
 
@@ -3249,7 +3252,8 @@ gh repo edit StefanMitrokhin/price-catalog-parser \
 - YAML-источник молча ходит в карточки.
 - Относительный `output_dir` считается от cwd, хотя он задан в конфиге.
 - В репозиторий попал файл из `output/` или `data/runs/*.json`.
-- `LICENSE` изменён.
+- В `LICENSE` изменено что-то кроме строки copyright, либо copyright не равен `Copyright (c) 2026 Stefan Mitrokhin`.
+- В `README.md`, `pyproject.toml` или бейдже CI остался другой владелец репозитория.
 - Появился третий сайт, Scrapy, Playwright или база данных.
 
 Исправление такого расхождения — привести код к этому документу. Документ во время реализации не переписывать «под то, что вышло».
