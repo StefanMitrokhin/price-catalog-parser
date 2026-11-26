@@ -221,3 +221,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# priceparser runtime
+output/
+data/runs/*
+!data/runs/.gitkeep

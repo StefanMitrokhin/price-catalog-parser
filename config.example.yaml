@@ -1,0 +1,31 @@
+user_agent: "price-catalog-parser/0.1.0 (educational parser; +https://github.com/StefanMitrokhin/price-catalog-parser)"
+timeout_seconds: 20
+max_retries: 3
+backoff_base_seconds: 0.5
+backoff_max_seconds: 8
+retry_statuses: [429, 500, 502, 503, 504]
+concurrency: 4
+delay_seconds: 1.0
+respect_robots: true
+max_pages: 2
+fetch_details: false
+output_dir: output
+runs_dir: data/runs
+log_level: INFO
+log_file: null
+
+sources:
+  - id: books
+    type: books_toscrape
+    enabled: true
+    start_url: "https://books.toscrape.com/"
+    currency: GBP
+    categories: ["Travel"]
+    max_pages: 1
+    fetch_details: true
+
+  - id: laptops
+    type: yaml
+    enabled: true
+    config_file: sources/webscraper_laptops.yaml
+    max_pages: 1

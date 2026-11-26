@@ -1,0 +1,52 @@
+start_urls:
+  - "https://webscraper.io/test-sites/e-commerce/static/computers/laptops"
+currency: USD
+category: Laptops
+item: "div.card.thumbnail"
+fields:
+  name:
+    selector: "a.title"
+    attr: title
+  url:
+    selector: "a.title"
+    attr: href
+    absolute: true
+  price:
+    selector: "span[itemprop=price]"
+  old_price:
+    selector: "span.old-price"
+    optional: true
+  availability:
+    selector: "span.availability"
+    optional: true
+  image_url:
+    selector: "img"
+    attr: src
+    absolute: true
+    optional: true
+  sku:
+    selector: "[itemprop=sku]"
+    optional: true
+  rating:
+    selector: "p[data-rating]"
+    attr: data-rating
+    count_selector: "span.ws-icon-star"
+    optional: true
+  category:
+    selector: "span.category"
+    optional: true
+pagination:
+  next_selector: "a[rel=next]"
+  attr: href
+  absolute: true
+availability_map:
+  in_stock:
+    - "in stock"
+    - "available"
+    - "в наличии"
+  out_of_stock:
+    - "out of stock"
+    - "not in stock"
+    - "sold out"
+    - "unavailable"
+    - "нет в наличии"
